@@ -1,3 +1,4 @@
+import 'package:dicoding_submission_restaurant_app_api/model/detail_restaurant_model.dart';
 import 'package:dicoding_submission_restaurant_app_api/model/list_restaurant_model.dart';
 import 'package:dicoding_submission_restaurant_app_api/network/api_service.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,7 +17,7 @@ class RestaurantProvider extends ChangeNotifier {
   ResultState _state = ResultState.LOADING;
 
   String get message => _message;
-  ListRestaurantModel? get result => _listRestaurantResult;
+  ListRestaurantModel? get listRestaurantResult => _listRestaurantResult;
   ResultState? get state => _state;
 
   Future _fetchListRestaurant() async {
