@@ -36,8 +36,7 @@ class DetailPage extends StatelessWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           child: ChangeNotifierProvider<DetailRestaurantProvider>(
-            create: (_) =>
-                DetailRestaurantProvider(apiService: ApiService(), id: data.id),
+            create: (_) => DetailRestaurantProvider(id: data.id),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 22),
               child: Consumer<DetailRestaurantProvider>(

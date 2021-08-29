@@ -4,10 +4,10 @@ import 'package:dicoding_submission_restaurant_app_api/provider/result_state.dar
 import 'package:flutter/cupertino.dart';
 
 class DetailRestaurantProvider extends ChangeNotifier {
-  final ApiService apiService;
+  final ApiService apiService = ApiService();
   final String id;
 
-  DetailRestaurantProvider({required this.apiService, required this.id}) {
+  DetailRestaurantProvider({required this.id}) {
     _fetchDetailRestaurant(id);
   }
 
