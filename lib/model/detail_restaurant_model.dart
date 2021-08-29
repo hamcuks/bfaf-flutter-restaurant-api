@@ -57,7 +57,7 @@ class Restaurant {
   final String? pictureId;
   final List<Category>? categories;
   final Menus? menus;
-  final int? rating;
+  final String? rating;
   final List<CustomerReview>? customerReviews;
 
   factory Restaurant.fromJson(Map<String, dynamic> json) => Restaurant(
@@ -70,7 +70,7 @@ class Restaurant {
         categories: List<Category>.from(
             json["categories"].map((x) => Category.fromJson(x))),
         menus: Menus.fromJson(json["menus"]),
-        rating: json["rating"],
+        rating: json["rating"].toString(),
         customerReviews: List<CustomerReview>.from(
             json["customerReviews"].map((x) => CustomerReview.fromJson(x))),
       );
