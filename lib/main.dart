@@ -1,4 +1,6 @@
+import 'package:dicoding_submission_restaurant_app_api/model/detail_arguments_model.dart';
 import 'package:dicoding_submission_restaurant_app_api/theme.dart';
+import 'package:dicoding_submission_restaurant_app_api/ui/detail_page.dart';
 import 'package:dicoding_submission_restaurant_app_api/ui/home_page.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +14,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Restauranku',
       theme: ThemeData(scaffoldBackgroundColor: MyTheme.scaffoldBackground),
-      home: HomePage(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => HomePage(),
+        '/detail': (context) => DetailPage(
+            data:
+                ModalRoute.of(context)?.settings.arguments as DetailArguments),
+      },
     );
   }
 }

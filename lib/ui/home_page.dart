@@ -1,8 +1,10 @@
+import 'package:dicoding_submission_restaurant_app_api/model/detail_arguments_model.dart';
 import 'package:dicoding_submission_restaurant_app_api/model/detail_restaurant_model.dart';
 import 'package:dicoding_submission_restaurant_app_api/model/list_restaurant_model.dart';
 import 'package:dicoding_submission_restaurant_app_api/network/api_service.dart';
 import 'package:dicoding_submission_restaurant_app_api/provider/restaurant_provider.dart';
 import 'package:dicoding_submission_restaurant_app_api/theme.dart';
+import 'package:dicoding_submission_restaurant_app_api/widget/info_restaurant_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -134,7 +136,9 @@ class RestoranWidget extends StatelessWidget {
                   return ListView.builder(
                     shrinkWrap: true,
                     itemBuilder: (context, index) => _buildRestaurantCard(
-                        data: data.result!.restaurants![index]),
+                      context: context,
+                      data: data.result!.restaurants![index],
+                    ),
                     itemCount: data.result!.restaurants!.length,
                   );
                 } else if (data.state == ResultState.NO_DATA) {
@@ -154,9 +158,15 @@ class RestoranWidget extends StatelessWidget {
     );
   }
 
-  InkWell _buildRestaurantCard({data}) {
+  InkWell _buildRestaurantCard({BuildContext? context, data}) {
     return InkWell(
-      onTap: () => ApiService().listRestaurants(),
+      onTap: () => Navigator.of(context!).pushNamed(
+        '/detail',
+        arguments: DetailArguments(
+          id: data.id,
+          name: data.name,
+        ),
+      ),
       child: Container(
         padding: EdgeInsets.all(16),
         margin: EdgeInsets.symmetric(vertical: 8),
@@ -198,7 +208,7 @@ class RestoranWidget extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    _buildRetaurantInfo(
+                    InfoRestaurant(
                       icon: Icons.star,
                       iconColor: Colors.orange,
                       text: '${data.rating}',
@@ -206,7 +216,7 @@ class RestoranWidget extends StatelessWidget {
                     SizedBox(
                       width: 16,
                     ),
-                    _buildRetaurantInfo(
+                    InfoRestaurant(
                       icon: Icons.location_pin,
                       iconColor: Colors.red,
                       text: '${data.city}',
@@ -218,22 +228,6 @@ class RestoranWidget extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-
-  Row _buildRetaurantInfo({IconData? icon, Color? iconColor, String? text}) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Icon(
-          icon,
-          color: iconColor,
-        ),
-        SizedBox(
-          width: 8,
-        ),
-        Text("$text"),
-      ],
     );
   }
 }
