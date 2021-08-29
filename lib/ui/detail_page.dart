@@ -17,9 +17,6 @@ class DetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => ApiService().detailRestaurant(data.id),
-      ),
       appBar: AppBar(
         centerTitle: true,
         title: Text(
@@ -124,13 +121,126 @@ class DetailPage extends StatelessWidget {
                 InfoRestaurant(
                   icon: Icons.location_pin,
                   iconColor: Colors.red,
-                  text: "${data.city}",
+                  text: "${data.address}, ${data.city}",
                 ),
+              ],
+            ),
+            SizedBox(
+              height: 32,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Makanan',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                ),
+                SizedBox(
+                  height: 16,
+                ),
+                for (var item in data.menus.foods)
+                  _buildFoodAndDrinkItem(
+                      icon: Icons.ramen_dining_outlined, text: item.name),
+              ],
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Minuman',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                ),
+                SizedBox(
+                  height: 16,
+                ),
+                for (var item in data.menus.drinks)
+                  _buildFoodAndDrinkItem(
+                      icon: Icons.local_cafe, text: item.name),
+              ],
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Ulasan',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                ),
+                SizedBox(
+                  height: 16,
+                ),
+                for (var item in data.customerReviews)
+                  _buildUlasanItem(data: item)
               ],
             )
           ],
         )
       ],
+    );
+  }
+
+  Container _buildFoodAndDrinkItem({IconData? icon, String? text}) {
+    return Container(
+      width: double.infinity,
+      alignment: Alignment.centerLeft,
+      height: 50,
+      padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+      margin: EdgeInsets.only(bottom: 8),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: Colors.grey[200],
+      ),
+      child: Row(
+        children: [
+          Icon(icon),
+          SizedBox(
+            width: 16,
+          ),
+          Text(
+            "$text",
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Container _buildUlasanItem({data}) {
+    return Container(
+      width: double.infinity,
+      alignment: Alignment.centerLeft,
+      padding: EdgeInsets.all(16),
+      margin: EdgeInsets.only(bottom: 8),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: Colors.grey[200],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            data.name,
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          ),
+          SizedBox(
+            height: 16,
+          ),
+          Text(
+            data.review,
+            style: TextStyle(
+                fontSize: 18, fontWeight: FontWeight.w600, height: 1.4),
+          ),
+          SizedBox(
+            height: 8,
+          ),
+          Text(data.date),
+        ],
+      ),
     );
   }
 }
