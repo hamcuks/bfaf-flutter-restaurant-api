@@ -1,9 +1,8 @@
-import 'package:dicoding_submission_restaurant_app_api/model/detail_restaurant_model.dart';
 import 'package:dicoding_submission_restaurant_app_api/model/list_restaurant_model.dart';
+import 'package:dicoding_submission_restaurant_app_api/model/search_restaurant_model.dart';
 import 'package:dicoding_submission_restaurant_app_api/network/api_service.dart';
-import 'package:flutter/cupertino.dart';
-
-enum ResultState { LOADING, NO_DATA, HAS_DATA, ERROR }
+import 'package:dicoding_submission_restaurant_app_api/provider/result_state.dart';
+import 'package:flutter/material.dart';
 
 class RestaurantProvider extends ChangeNotifier {
   final ApiService apiService;
@@ -12,12 +11,13 @@ class RestaurantProvider extends ChangeNotifier {
     _fetchListRestaurant();
   }
 
-  ListRestaurantModel? _listRestaurantResult;
+  var _listRestaurantResult;
   String _message = '';
+  String _keyword = '';
   ResultState _state = ResultState.LOADING;
 
   String get message => _message;
-  ListRestaurantModel? get listRestaurantResult => _listRestaurantResult;
+  get listRestaurantResult => _listRestaurantResult;
   ResultState? get state => _state;
 
   Future _fetchListRestaurant() async {
@@ -30,7 +30,33 @@ class RestaurantProvider extends ChangeNotifier {
       if (restaurant!.restaurants!.isEmpty) {
         _state = ResultState.NO_DATA;
         notifyListeners();
-        return _message = 'No Data';
+        return _message = 'Data Tidak Ditemukan :(';
+      } else {
+        _state = ResultState.HAS_DATA;
+        notifyListeners();
+        return _listRestaurantResult = restaurant;
+      }
+    } catch (e) {
+      _state = ResultState.ERROR;
+      notifyListeners();
+      return _message = 'Error: $e';
+    }
+  }
+
+  //SearchRestaurantModel? _restaurantResult;
+  //SearchRestaurantModel? get restaurantResult => _restaurantResult;
+
+  Future searchRestaurant(String keyword) async {
+    try {
+      _state = ResultState.LOADING;
+      notifyListeners();
+
+      final restaurant = await apiService.searchRestaurant(keyword);
+
+      if (restaurant!.restaurants!.isEmpty) {
+        _state = ResultState.NO_DATA;
+        notifyListeners();
+        return _message = 'Pencarian Tidak Ditemukan :(';
       } else {
         _state = ResultState.HAS_DATA;
         notifyListeners();
