@@ -1,9 +1,7 @@
 import 'package:dicoding_submission_restaurant_app_api/model/detail_restaurant_model.dart';
-import 'package:dicoding_submission_restaurant_app_api/model/list_restaurant_model.dart';
 import 'package:dicoding_submission_restaurant_app_api/network/api_service.dart';
+import 'package:dicoding_submission_restaurant_app_api/provider/result_state.dart';
 import 'package:flutter/cupertino.dart';
-
-enum ResultState { LOADING, NO_DATA, HAS_DATA, ERROR }
 
 class DetailRestaurantProvider extends ChangeNotifier {
   final ApiService apiService;
