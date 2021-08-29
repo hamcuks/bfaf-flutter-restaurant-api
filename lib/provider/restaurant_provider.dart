@@ -13,7 +13,6 @@ class RestaurantProvider extends ChangeNotifier {
 
   var _listRestaurantResult;
   String _message = '';
-  String _keyword = '';
   ResultState _state = ResultState.LOADING;
 
   String get message => _message;
@@ -42,9 +41,6 @@ class RestaurantProvider extends ChangeNotifier {
       return _message = 'Error: $e';
     }
   }
-
-  //SearchRestaurantModel? _restaurantResult;
-  //SearchRestaurantModel? get restaurantResult => _restaurantResult;
 
   Future searchRestaurant(String keyword) async {
     try {
