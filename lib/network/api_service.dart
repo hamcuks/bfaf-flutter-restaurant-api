@@ -1,0 +1,20 @@
+import 'dart:convert';
+
+import 'package:dicoding_submission_restaurant_app_api/model/list_restaurant_model.dart';
+
+import 'package:http/http.dart' as http;
+
+class ApiService {
+  static final String _url = 'https://restaurant-api.dicoding.dev/';
+
+  Future<ListRestaurantModel?> listRestaurants() async {
+    final response = await http.get(Uri.parse(_url + '/list'));
+
+    if (response.statusCode == 200) {
+      var jsonData = json.decode(response.body);
+      return ListRestaurantModel.fromJson(jsonData);
+    } else {
+      throw Exception('Gagal memuat data');
+    }
+  }
+}
