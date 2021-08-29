@@ -137,9 +137,9 @@ class RestoranWidget extends StatelessWidget {
                     shrinkWrap: true,
                     itemBuilder: (context, index) => _buildRestaurantCard(
                       context: context,
-                      data: data.result!.restaurants![index],
+                      data: data.listRestaurantResult!.restaurants![index],
                     ),
-                    itemCount: data.result!.restaurants!.length,
+                    itemCount: data.listRestaurantResult!.restaurants!.length,
                   );
                 } else if (data.state == ResultState.NO_DATA) {
                   return Center(
