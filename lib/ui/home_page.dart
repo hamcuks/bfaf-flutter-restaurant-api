@@ -1,5 +1,10 @@
+import 'package:dicoding_submission_restaurant_app_api/model/detail_restaurant_model.dart';
+import 'package:dicoding_submission_restaurant_app_api/model/list_restaurant_model.dart';
+import 'package:dicoding_submission_restaurant_app_api/network/api_service.dart';
+import 'package:dicoding_submission_restaurant_app_api/provider/restaurant_provider.dart';
 import 'package:dicoding_submission_restaurant_app_api/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -58,7 +63,9 @@ class _HomePageState extends State<HomePage> {
               SizedBox(
                 height: 32,
               ),
-              Expanded(child: RestoranWidget())
+              Expanded(
+                child: RestoranWidget(),
+              )
             ],
           ),
         ),
@@ -111,72 +118,105 @@ class RestoranWidget extends StatelessWidget {
         SizedBox(
           height: 8,
         ),
-        Expanded(
-          flex: 10,
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemBuilder: (context, index) => _buildRestaurantCard(),
-            itemCount: 5,
+        ChangeNotifierProvider<RestaurantProvider>(
+          lazy: true,
+          create: (_) => RestaurantProvider(apiService: ApiService()),
+          child: Expanded(
+            flex: 10,
+            child: Consumer<RestaurantProvider>(
+              builder: (context, data, _) {
+                if (data.state == ResultState.LOADING) {
+                  print(data.state);
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (data.state == ResultState.HAS_DATA) {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) => _buildRestaurantCard(
+                        data: data.result!.restaurants![index]),
+                    itemCount: data.result!.restaurants!.length,
+                  );
+                } else if (data.state == ResultState.NO_DATA) {
+                  return Center(
+                    child: Text('${data.message}'),
+                  );
+                } else {
+                  return Center(
+                    child: Text(''),
+                  );
+                }
+              },
+            ),
           ),
         ),
       ],
     );
   }
 
-  Container _buildRestaurantCard() {
-    return Container(
-      padding: EdgeInsets.all(16),
-      margin: EdgeInsets.symmetric(vertical: 8),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(color: Colors.black12, blurRadius: 8, offset: Offset(1, 2)),
-        ],
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 64,
-            height: 64,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: Colors.black87,
+  InkWell _buildRestaurantCard({data}) {
+    return InkWell(
+      onTap: () => ApiService().listRestaurants(),
+      child: Container(
+        padding: EdgeInsets.all(16),
+        margin: EdgeInsets.symmetric(vertical: 8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+                color: Colors.black12, blurRadius: 8, offset: Offset(1, 2)),
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 64,
+              height: 64,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Colors.black87,
+                image: DecorationImage(
+                  fit: BoxFit.fill,
+                  image: NetworkImage(
+                      'https://restaurant-api.dicoding.dev/images/small/${data.pictureId}'),
+                ),
+              ),
             ),
-          ),
-          SizedBox(
-            width: 16,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Restoran ABC',
-                style: MyTheme.normalText,
-              ),
-              SizedBox(
-                height: 8,
-              ),
-              Row(
-                children: [
-                  _buildRetaurantInfo(
-                    icon: Icons.star,
-                    iconColor: Colors.orange,
-                    text: '4.3',
-                  ),
-                  SizedBox(
-                    width: 16,
-                  ),
-                  _buildRetaurantInfo(
-                    icon: Icons.location_pin,
-                    iconColor: Colors.red,
-                    text: 'Yogyakarta',
-                  ),
-                ],
-              )
-            ],
-          )
-        ],
+            SizedBox(
+              width: 16,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '${data.name}',
+                  style: MyTheme.normalText,
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Row(
+                  children: [
+                    _buildRetaurantInfo(
+                      icon: Icons.star,
+                      iconColor: Colors.orange,
+                      text: '${data.rating}',
+                    ),
+                    SizedBox(
+                      width: 16,
+                    ),
+                    _buildRetaurantInfo(
+                      icon: Icons.location_pin,
+                      iconColor: Colors.red,
+                      text: '${data.city}',
+                    ),
+                  ],
+                )
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

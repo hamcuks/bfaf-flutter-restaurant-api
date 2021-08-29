@@ -8,7 +8,7 @@ class RestaurantProvider extends ChangeNotifier {
   final ApiService apiService;
 
   RestaurantProvider({required this.apiService}) {
-    _fetchListRestaurant;
+    _fetchListRestaurant();
   }
 
   ListRestaurantModel? _listRestaurantResult;
@@ -17,7 +17,7 @@ class RestaurantProvider extends ChangeNotifier {
 
   String get message => _message;
   ListRestaurantModel? get result => _listRestaurantResult;
-  ResultState get state => _state;
+  ResultState? get state => _state;
 
   Future _fetchListRestaurant() async {
     try {
