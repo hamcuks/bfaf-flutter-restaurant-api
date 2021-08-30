@@ -1,3 +1,4 @@
+import 'package:dicoding_submission_restaurant_app_api/helper/connectivity_state.dart';
 import 'package:dicoding_submission_restaurant_app_api/model/detail_restaurant_model.dart';
 import 'package:dicoding_submission_restaurant_app_api/network/api_service.dart';
 import 'package:dicoding_submission_restaurant_app_api/provider/result_state.dart';
@@ -19,23 +20,32 @@ class DetailRestaurantProvider extends ChangeNotifier {
   DetailRestaurantModel? get detailRestaurantResult => _detailRestaurantResult;
   ResultState? get state => _state;
 
+  Future<bool> get _checkConnection async {
+    return await ConnectivityState().isConnectedToNetwork();
+  }
+
   Future _fetchDetailRestaurant(String id) async {
     try {
       _state = ResultState.LOADING;
       notifyListeners();
 
-      final restaurant = await apiService.detailRestaurant(id);
+      if (await _checkConnection) {
+        final restaurant = await apiService.detailRestaurant(id);
 
-      if (restaurant!.restaurant == null) {
-        print('error');
-        _state = ResultState.NO_DATA;
-        notifyListeners();
-        return _message = 'No Data';
+        if (restaurant!.restaurant == null) {
+          print('error');
+          _state = ResultState.NO_DATA;
+          notifyListeners();
+          return _message = 'No Data';
+        } else {
+          print('has data');
+          _state = ResultState.HAS_DATA;
+          notifyListeners();
+          return _detailRestaurantResult = restaurant;
+        }
       } else {
-        print('has data');
-        _state = ResultState.HAS_DATA;
+        _state = ResultState.NO_INTERNET;
         notifyListeners();
-        return _detailRestaurantResult = restaurant;
       }
     } catch (e) {
       _state = ResultState.ERROR;

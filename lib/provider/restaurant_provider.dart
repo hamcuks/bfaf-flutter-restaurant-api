@@ -1,3 +1,4 @@
+import 'package:dicoding_submission_restaurant_app_api/helper/connectivity_state.dart';
 import 'package:dicoding_submission_restaurant_app_api/model/list_restaurant_model.dart';
 import 'package:dicoding_submission_restaurant_app_api/model/search_restaurant_model.dart';
 import 'package:dicoding_submission_restaurant_app_api/network/api_service.dart';
@@ -11,6 +12,8 @@ class RestaurantProvider extends ChangeNotifier {
     _fetchListRestaurant();
   }
 
+  //var connectivityResult =
+
   var _listRestaurantResult;
   String _message = '';
   ResultState _state = ResultState.LOADING;
@@ -19,21 +22,30 @@ class RestaurantProvider extends ChangeNotifier {
   get listRestaurantResult => _listRestaurantResult;
   ResultState? get state => _state;
 
+  Future<bool> get _checkConnection async {
+    return await ConnectivityState().isConnectedToNetwork();
+  }
+
   Future _fetchListRestaurant() async {
     try {
       _state = ResultState.LOADING;
       notifyListeners();
 
-      final restaurant = await apiService.listRestaurants();
+      if (await _checkConnection) {
+        final restaurant = await apiService.listRestaurants();
 
-      if (restaurant!.restaurants!.isEmpty) {
-        _state = ResultState.NO_DATA;
-        notifyListeners();
-        return _message = 'Data Tidak Ditemukan :(';
+        if (restaurant!.restaurants!.isEmpty) {
+          _state = ResultState.NO_DATA;
+          notifyListeners();
+          return _message = 'Data Tidak Ditemukan :(';
+        } else {
+          _state = ResultState.HAS_DATA;
+          notifyListeners();
+          return _listRestaurantResult = restaurant;
+        }
       } else {
-        _state = ResultState.HAS_DATA;
+        _state = ResultState.NO_INTERNET;
         notifyListeners();
-        return _listRestaurantResult = restaurant;
       }
     } catch (e) {
       _state = ResultState.ERROR;
@@ -47,16 +59,21 @@ class RestaurantProvider extends ChangeNotifier {
       _state = ResultState.LOADING;
       notifyListeners();
 
-      final restaurant = await apiService.searchRestaurant(keyword);
+      if (await _checkConnection) {
+        final restaurant = await apiService.searchRestaurant(keyword);
 
-      if (restaurant!.restaurants!.isEmpty) {
-        _state = ResultState.NO_DATA;
-        notifyListeners();
-        return _message = 'Pencarian Tidak Ditemukan :(';
+        if (restaurant!.restaurants!.isEmpty) {
+          _state = ResultState.NO_DATA;
+          notifyListeners();
+          return _message = 'Pencarian Tidak Ditemukan :(';
+        } else {
+          _state = ResultState.HAS_DATA;
+          notifyListeners();
+          return _listRestaurantResult = restaurant;
+        }
       } else {
-        _state = ResultState.HAS_DATA;
+        _state = ResultState.NO_INTERNET;
         notifyListeners();
-        return _listRestaurantResult = restaurant;
       }
     } catch (e) {
       _state = ResultState.ERROR;
