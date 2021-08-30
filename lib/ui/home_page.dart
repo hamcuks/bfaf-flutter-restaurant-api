@@ -2,6 +2,7 @@ import 'package:dicoding_submission_restaurant_app_api/network/api_service.dart'
 import 'package:dicoding_submission_restaurant_app_api/provider/restaurant_provider.dart';
 import 'package:dicoding_submission_restaurant_app_api/provider/result_state.dart';
 import 'package:dicoding_submission_restaurant_app_api/theme.dart';
+import 'package:dicoding_submission_restaurant_app_api/widget/load_animation_widget.dart';
 import 'package:dicoding_submission_restaurant_app_api/widget/restaurant_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -130,8 +131,10 @@ class RestoranWidget extends StatelessWidget {
             builder: (context, data, _) {
               if (data.state == ResultState.LOADING) {
                 print(data.state);
-                return Center(
-                  child: CircularProgressIndicator(),
+                return LoadAnimation(
+                  fileName: 'loading',
+                  text: 'Sedang Memuat Data..',
+                  width: 50,
                 );
               } else if (data.state == ResultState.HAS_DATA) {
                 return ListView.builder(
@@ -142,8 +145,17 @@ class RestoranWidget extends StatelessWidget {
                   itemCount: data.listRestaurantResult!.restaurants!.length,
                 );
               } else if (data.state == ResultState.NO_DATA) {
-                return Center(
-                  child: Text('${data.message}'),
+                return LoadAnimation(
+                  fileName: 'not-found',
+                  text: 'Tidak Dapat Menemukan Data...',
+                  width: 250,
+                );
+              } else if (data.state == ResultState.NO_INTERNET) {
+                return LoadAnimation(
+                  fileName: 'no-internet',
+                  text:
+                      'Tidak dapat memuat data, pastikan anda terkoneksi internet...',
+                  width: 250,
                 );
               } else {
                 return Center(
