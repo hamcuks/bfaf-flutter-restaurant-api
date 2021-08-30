@@ -11,7 +11,6 @@ class ApiService {
 
   Future<ListRestaurantModel?> listRestaurants() async {
     final response = await http.get(Uri.parse(_url + '/list'));
-
     if (response.statusCode == 200) {
       var jsonData = json.decode(response.body);
       return ListRestaurantModel.fromJson(jsonData);
@@ -21,7 +20,7 @@ class ApiService {
   }
 
   Future<DetailRestaurantModel?> detailRestaurant(String id) async {
-    final response = await http.get(Uri.parse(_url + '/detail/${id}'));
+    final response = await http.get(Uri.parse(_url + '/detail/$id'));
 
     if (response.statusCode == 200) {
       var jsonData = json.decode(response.body);
@@ -33,7 +32,7 @@ class ApiService {
   }
 
   Future<SearchRestaurantModel?> searchRestaurant(String text) async {
-    final response = await http.get(Uri.parse(_url + '/search?q=${text}'));
+    final response = await http.get(Uri.parse(_url + '/search?q=$text'));
 
     if (response.statusCode == 200) {
       var jsonData = json.decode(response.body);
