@@ -1,6 +1,4 @@
 import 'package:dicoding_submission_restaurant_app_api/helper/connectivity_state.dart';
-import 'package:dicoding_submission_restaurant_app_api/model/list_restaurant_model.dart';
-import 'package:dicoding_submission_restaurant_app_api/model/search_restaurant_model.dart';
 import 'package:dicoding_submission_restaurant_app_api/network/api_service.dart';
 import 'package:dicoding_submission_restaurant_app_api/provider/result_state.dart';
 import 'package:flutter/material.dart';

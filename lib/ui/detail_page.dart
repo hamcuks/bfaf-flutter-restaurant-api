@@ -1,5 +1,4 @@
 import 'package:dicoding_submission_restaurant_app_api/model/detail_arguments_model.dart';
-import 'package:dicoding_submission_restaurant_app_api/network/api_service.dart';
 import 'package:dicoding_submission_restaurant_app_api/provider/detail_restaurant_provider.dart';
 import 'package:dicoding_submission_restaurant_app_api/provider/result_state.dart';
 import 'package:dicoding_submission_restaurant_app_api/widget/info_restaurant_widget.dart';
