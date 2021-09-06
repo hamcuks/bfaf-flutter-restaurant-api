@@ -2,6 +2,8 @@ import 'package:dicoding_submission_restaurant_app_api/network/api_service.dart'
 import 'package:dicoding_submission_restaurant_app_api/provider/restaurant_provider.dart';
 import 'package:dicoding_submission_restaurant_app_api/provider/result_state.dart';
 import 'package:dicoding_submission_restaurant_app_api/theme.dart';
+import 'package:dicoding_submission_restaurant_app_api/ui/favorit_page.dart';
+import 'package:dicoding_submission_restaurant_app_api/ui/settings_page.dart';
 import 'package:dicoding_submission_restaurant_app_api/widget/load_animation_widget.dart';
 import 'package:dicoding_submission_restaurant_app_api/widget/restaurant_card.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +16,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   TextEditingController _searchController = TextEditingController();
+  int _selectedIndex = 0;
 
   @override
   void dispose() {
@@ -21,60 +24,123 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
+  Container _buildBottomNavigationBar() {
+    return Container(
+      height: 72,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+          color: MyTheme.green),
+      child: ClipRRect(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+        child: BottomNavigationBar(
+          backgroundColor: MyTheme.green,
+          items: [
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.home,
+                  size: 32,
+                ),
+                label: ''),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.favorite,
+                  size: 32,
+                ),
+                label: ''),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.settings,
+                  size: 32,
+                ),
+                label: ''),
+          ],
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          selectedItemColor: MyTheme.scaffoldBackground,
+          unselectedItemColor: Colors.teal[700],
+          currentIndex: _selectedIndex,
+          onTap: (int value) {
+            setState(() {
+              _selectedIndex = value;
+            });
+          },
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.only(
-            top: 24,
-            left: 22,
-            right: 22,
-          ),
-          child: ChangeNotifierProvider<RestaurantProvider>(
-            lazy: false,
-            create: (_) => RestaurantProvider(apiService: ApiService()),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                _homeHeader(),
-                SizedBox(
-                  height: 22,
-                ),
-                Material(
-                  borderRadius: BorderRadius.circular(8),
-                  elevation: 8,
-                  shadowColor: Colors.black26,
-                  child: Consumer<RestaurantProvider>(
-                    builder: (context, provider, _) => TextField(
-                      //onTap: () => Navigator.of(context).pushNamed('/search'),
-                      controller: _searchController,
-                      onChanged: (String val) => provider.searchRestaurant(val),
-                      decoration: InputDecoration(
-                        hintText: 'Warmindo dekat sini..',
-                        suffixIcon: Icon(
-                          Icons.search,
-                          color: MyTheme.green,
-                        ),
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide.none,
-                        ),
+      bottomNavigationBar: _buildBottomNavigationBar(),
+      body: _buildBody(),
+    );
+  }
+
+  Widget _buildBody() {
+    switch (_selectedIndex) {
+      case 0:
+        return _buildHomePage();
+      case 1:
+        return FavoritePage();
+      case 2:
+        return SettingsPage();
+      default:
+        return _buildHomePage();
+    }
+  }
+
+  SafeArea _buildHomePage() {
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.only(
+          top: 24,
+          left: 22,
+          right: 22,
+        ),
+        child: ChangeNotifierProvider<RestaurantProvider>(
+          lazy: false,
+          create: (_) => RestaurantProvider(apiService: ApiService()),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              _homeHeader(),
+              SizedBox(
+                height: 22,
+              ),
+              Material(
+                borderRadius: BorderRadius.circular(8),
+                elevation: 8,
+                shadowColor: Colors.black26,
+                child: Consumer<RestaurantProvider>(
+                  builder: (context, provider, _) => TextField(
+                    //onTap: () => Navigator.of(context).pushNamed('/search'),
+                    controller: _searchController,
+                    onChanged: (String val) => provider.searchRestaurant(val),
+                    decoration: InputDecoration(
+                      hintText: 'Warmindo dekat sini..',
+                      suffixIcon: Icon(
+                        Icons.search,
+                        color: MyTheme.green,
+                      ),
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide.none,
                       ),
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 32,
-                ),
-                Expanded(
-                  child: RestoranWidget(),
-                )
-              ],
-            ),
+              ),
+              SizedBox(
+                height: 32,
+              ),
+              Expanded(
+                child: RestoranWidget(),
+              )
+            ],
           ),
         ),
       ),
