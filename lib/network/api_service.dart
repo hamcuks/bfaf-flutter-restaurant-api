@@ -24,7 +24,6 @@ class ApiService {
 
     if (response.statusCode == 200) {
       var jsonData = json.decode(response.body);
-      print(jsonData);
       return DetailRestaurantModel.fromJson(jsonData);
     } else {
       throw Exception('Gagal memuat data');
