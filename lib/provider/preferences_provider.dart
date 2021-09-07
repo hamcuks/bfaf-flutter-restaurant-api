@@ -17,7 +17,10 @@ class PreferencesProvider extends ChangeNotifier {
   }
 
   set isDarkMode(bool value) {
+    _isDarkMode = value;
     _prefHelper.darkMode(value);
     notifyListeners();
+
+    //_getTheme();
   }
 }
