@@ -33,12 +33,10 @@ class DetailRestaurantProvider extends ChangeNotifier {
         final restaurant = await apiService.detailRestaurant(id);
 
         if (restaurant!.restaurant == null) {
-          print('error');
           _state = ResultState.NO_DATA;
           notifyListeners();
           return _message = 'No Data';
         } else {
-          print('has data');
           _state = ResultState.HAS_DATA;
           notifyListeners();
           return _detailRestaurantResult = restaurant;
