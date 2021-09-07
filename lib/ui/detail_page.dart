@@ -1,5 +1,7 @@
 import 'package:dicoding_submission_restaurant_app_api/model/detail_arguments_model.dart';
+import 'package:dicoding_submission_restaurant_app_api/model/favourite_model.dart';
 import 'package:dicoding_submission_restaurant_app_api/provider/detail_restaurant_provider.dart';
+import 'package:dicoding_submission_restaurant_app_api/provider/favourite_provider.dart';
 import 'package:dicoding_submission_restaurant_app_api/provider/result_state.dart';
 import 'package:dicoding_submission_restaurant_app_api/widget/info_restaurant_widget.dart';
 import 'package:dicoding_submission_restaurant_app_api/widget/load_animation_widget.dart';
@@ -83,18 +85,73 @@ class DetailPage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          width: double.infinity,
-          height: 200,
-          decoration: BoxDecoration(
-            color: Colors.black87,
-            borderRadius: BorderRadius.circular(8),
-            image: DecorationImage(
-              fit: BoxFit.fill,
-              image: NetworkImage(
-                  'https://restaurant-api.dicoding.dev/images/large/${data.pictureId}'),
+        Stack(
+          children: [
+            Container(
+              width: double.infinity,
+              height: 200,
+              margin: EdgeInsets.only(bottom: 27),
+              decoration: BoxDecoration(
+                color: Colors.black87,
+                borderRadius: BorderRadius.circular(8),
+                image: DecorationImage(
+                  fit: BoxFit.fill,
+                  image: NetworkImage(
+                      'https://restaurant-api.dicoding.dev/images/large/${data.pictureId}'),
+                ),
+              ),
             ),
-          ),
+            Positioned(
+              bottom: 0,
+              right: 10,
+              child: Consumer<FavouriteProvider>(
+                builder: (context, provider, _) {
+                  return FutureBuilder<bool>(
+                      future: provider.isFavourite(data.id),
+                      builder: (context, snapshot) {
+                        var isFavourite = snapshot.data ?? false;
+                        return Container(
+                          width: 54,
+                          height: 54,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black26,
+                                offset: Offset(0, 2),
+                              )
+                            ],
+                          ),
+                          child: IconButton(
+                            onPressed: () {
+                              if (isFavourite as bool) {
+                                provider.removeFavourite(data.id);
+                              } else {
+                                provider.addToFavourite(
+                                  FavouriteModel(
+                                    id: '${data.id}',
+                                    name: '${data.name}',
+                                    city: '${data.city}',
+                                    rating: '${data.rating}',
+                                    pictureId: '${data.pictureId}',
+                                  ),
+                                );
+                              }
+                            },
+                            icon: isFavourite as bool
+                                ? Icon(
+                                    Icons.favorite,
+                                    color: Colors.red,
+                                  )
+                                : Icon(Icons.favorite_outline),
+                          ),
+                        );
+                      });
+                },
+              ),
+            ),
+          ],
         ),
         SizedBox(
           height: 28,
