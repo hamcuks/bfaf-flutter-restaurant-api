@@ -2,7 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class PreferencesHelper {
   final Future<SharedPreferences> _sharedPreferences =
-      SharedPreferences as Future<SharedPreferences>;
+      SharedPreferences.getInstance();
 
   static const DARK_MODE = 'DARK_MODE';
 
