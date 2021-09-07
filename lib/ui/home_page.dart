@@ -99,49 +99,45 @@ class _HomePageState extends State<HomePage> {
           left: 22,
           right: 22,
         ),
-        child: ChangeNotifierProvider<RestaurantProvider>(
-          lazy: false,
-          create: (_) => RestaurantProvider(apiService: ApiService()),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              _homeHeader(),
-              SizedBox(
-                height: 22,
-              ),
-              Material(
-                borderRadius: BorderRadius.circular(8),
-                elevation: 8,
-                shadowColor: Colors.black26,
-                child: Consumer<RestaurantProvider>(
-                  builder: (context, provider, _) => TextField(
-                    //onTap: () => Navigator.of(context).pushNamed('/search'),
-                    controller: _searchController,
-                    onChanged: (String val) => provider.searchRestaurant(val),
-                    decoration: InputDecoration(
-                      hintText: 'Warmindo dekat sini..',
-                      suffixIcon: Icon(
-                        Icons.search,
-                        color: MyTheme.green,
-                      ),
-                      filled: true,
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide.none,
-                      ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            _homeHeader(),
+            SizedBox(
+              height: 22,
+            ),
+            Material(
+              borderRadius: BorderRadius.circular(8),
+              elevation: 8,
+              shadowColor: Colors.black26,
+              child: Consumer<RestaurantProvider>(
+                builder: (context, provider, _) => TextField(
+                  //onTap: () => Navigator.of(context).pushNamed('/search'),
+                  controller: _searchController,
+                  onChanged: (String val) => provider.searchRestaurant(val),
+                  decoration: InputDecoration(
+                    hintText: 'Warmindo dekat sini..',
+                    suffixIcon: Icon(
+                      Icons.search,
+                      color: MyTheme.green,
+                    ),
+                    filled: true,
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide.none,
                     ),
                   ),
                 ),
               ),
-              SizedBox(
-                height: 32,
-              ),
-              Expanded(
-                child: RestoranWidget(),
-              )
-            ],
-          ),
+            ),
+            SizedBox(
+              height: 32,
+            ),
+            Expanded(
+              child: RestoranWidget(),
+            )
+          ],
         ),
       ),
     );
