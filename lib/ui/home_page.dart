@@ -122,7 +122,6 @@ class _HomePageState extends State<HomePage> {
                       color: MyTheme.green,
                     ),
                     filled: true,
-                    fillColor: Colors.white,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                       borderSide: BorderSide.none,
