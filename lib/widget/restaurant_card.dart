@@ -1,5 +1,6 @@
 import 'package:dicoding_submission_restaurant_app_api/model/detail_arguments_model.dart';
 import 'package:dicoding_submission_restaurant_app_api/model/favourite_model.dart';
+import 'package:dicoding_submission_restaurant_app_api/navigation.dart';
 import 'package:dicoding_submission_restaurant_app_api/provider/favourite_provider.dart';
 import 'package:dicoding_submission_restaurant_app_api/widget/info_restaurant_widget.dart';
 import 'package:flutter/material.dart';
@@ -15,9 +16,9 @@ class RestaurantCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.of(context).pushNamed(
-        '/detail',
-        arguments: DetailArguments(
+      onTap: () => Navigation.intentWithData(
+        routeName: '/detail',
+        args: DetailArguments(
           id: data.id,
           name: data.name,
         ),
