@@ -1,5 +1,6 @@
 import 'package:dicoding_submission_restaurant_app_api/model/detail_arguments_model.dart';
 import 'package:dicoding_submission_restaurant_app_api/model/favourite_model.dart';
+import 'package:dicoding_submission_restaurant_app_api/navigation.dart';
 import 'package:dicoding_submission_restaurant_app_api/provider/detail_restaurant_provider.dart';
 import 'package:dicoding_submission_restaurant_app_api/provider/favourite_provider.dart';
 import 'package:dicoding_submission_restaurant_app_api/provider/result_state.dart';
@@ -23,15 +24,13 @@ class DetailPage extends StatelessWidget {
         centerTitle: true,
         title: Text(
           '${data.name}',
-          style: TextStyle(color: Colors.black87),
         ),
         elevation: 0,
         backgroundColor: Colors.transparent,
         leading: IconButton(
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => Navigation.back(),
           icon: Icon(
             Icons.chevron_left,
-            color: Colors.black87,
           ),
         ),
       ),
@@ -53,7 +52,7 @@ class DetailPage extends StatelessWidget {
                   } else if (data.state == ResultState.HAS_DATA) {
                     print("STATE: ${data.state}");
                     return _buildDetailRestaurant(
-                        data.detailRestaurantResult!.restaurant);
+                        context, data.detailRestaurantResult!.restaurant);
                   } else if (data.state == ResultState.NO_DATA) {
                     return LoadAnimation(
                       fileName: 'not-found',
@@ -81,7 +80,7 @@ class DetailPage extends StatelessWidget {
     );
   }
 
-  Column _buildDetailRestaurant(final data) {
+  Column _buildDetailRestaurant(BuildContext context, data) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -115,7 +114,7 @@ class DetailPage extends StatelessWidget {
                           height: 54,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Colors.white,
+                            color: Theme.of(context).cardColor,
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.black26,
@@ -125,7 +124,7 @@ class DetailPage extends StatelessWidget {
                           ),
                           child: IconButton(
                             onPressed: () {
-                              if (isFavourite as bool) {
+                              if (isFavourite) {
                                 provider.removeFavourite(data.id);
                               } else {
                                 provider.addToFavourite(
@@ -139,7 +138,7 @@ class DetailPage extends StatelessWidget {
                                 );
                               }
                             },
-                            icon: isFavourite as bool
+                            icon: isFavourite
                                 ? Icon(
                                     Icons.favorite,
                                     color: Colors.red,
@@ -207,7 +206,9 @@ class DetailPage extends StatelessWidget {
                 ),
                 for (var item in data.menus.foods)
                   _buildFoodAndDrinkItem(
-                      icon: Icons.ramen_dining_outlined, text: item.name),
+                      context: context,
+                      icon: Icons.ramen_dining_outlined,
+                      text: item.name),
               ],
             ),
             SizedBox(
@@ -225,7 +226,10 @@ class DetailPage extends StatelessWidget {
                 ),
                 for (var item in data.menus.drinks)
                   _buildFoodAndDrinkItem(
-                      icon: Icons.local_cafe, text: item.name),
+                    context: context,
+                    icon: Icons.local_cafe,
+                    text: item.name,
+                  ),
               ],
             ),
             SizedBox(
@@ -242,7 +246,7 @@ class DetailPage extends StatelessWidget {
                   height: 16,
                 ),
                 for (var item in data.customerReviews)
-                  _buildUlasanItem(data: item)
+                  _buildUlasanItem(context: context, data: item)
               ],
             )
           ],
@@ -251,7 +255,8 @@ class DetailPage extends StatelessWidget {
     );
   }
 
-  Container _buildFoodAndDrinkItem({IconData? icon, String? text}) {
+  Container _buildFoodAndDrinkItem(
+      {required BuildContext context, IconData? icon, String? text}) {
     return Container(
       width: double.infinity,
       alignment: Alignment.centerLeft,
@@ -260,7 +265,7 @@ class DetailPage extends StatelessWidget {
       margin: EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        color: Colors.grey[200],
+        color: Theme.of(context).cardColor,
       ),
       child: Row(
         children: [
@@ -277,7 +282,7 @@ class DetailPage extends StatelessWidget {
     );
   }
 
-  Container _buildUlasanItem({data}) {
+  Container _buildUlasanItem({required BuildContext context, data}) {
     return Container(
       width: double.infinity,
       alignment: Alignment.centerLeft,
@@ -285,7 +290,7 @@ class DetailPage extends StatelessWidget {
       margin: EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        color: Colors.grey[200],
+        color: Theme.of(context).cardColor,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
