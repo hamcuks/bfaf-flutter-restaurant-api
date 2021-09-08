@@ -12,6 +12,7 @@ final selectNotificationSubject = BehaviorSubject<String>();
 class NotificationHelper {
   static NotificationHelper? _instance;
   Random random = Random();
+  int randomNumber = 0;
 
   NotificationHelper._internal() {
     _instance = this;
@@ -55,7 +56,7 @@ class NotificationHelper {
     var platformSpecifics =
         NotificationDetails(android: androidPlatformSpecifics);
 
-    int randomNumber = random.nextInt(restaurant!.restaurants!.length);
+    randomNumber = random.nextInt(restaurant!.restaurants!.length);
 
     var titleNotification = "<b>Rekomendasi Restoran hari ini! 😋</b>";
     var titleRestaurant = restaurant.restaurants![randomNumber].name;
@@ -74,7 +75,7 @@ class NotificationHelper {
   void configureSelectNotificationSubject(String route) {
     selectNotificationSubject.stream.listen((String payload) async {
       var data = ListRestaurantModel.fromJson(json.decode(payload));
-      int randomNumber = random.nextInt(data.restaurants!.length);
+      randomNumber = random.nextInt(data.restaurants!.length);
 
       var restaurant = data.restaurants![randomNumber];
       Navigation.intentWithData(
