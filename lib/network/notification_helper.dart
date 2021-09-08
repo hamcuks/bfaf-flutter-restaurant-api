@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:math';
 
+import 'package:dicoding_submission_restaurant_app_api/model/detail_arguments_model.dart';
 import 'package:dicoding_submission_restaurant_app_api/model/list_restaurant_model.dart';
 import 'package:dicoding_submission_restaurant_app_api/navigation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -9,6 +11,7 @@ final selectNotificationSubject = BehaviorSubject<String>();
 
 class NotificationHelper {
   static NotificationHelper? _instance;
+  Random random = Random();
 
   NotificationHelper._internal() {
     _instance = this;
@@ -52,8 +55,10 @@ class NotificationHelper {
     var platformSpecifics =
         NotificationDetails(android: androidPlatformSpecifics);
 
-    var titleNotification = "<b>Rekomendasi Restoran hari ini!</b>";
-    var titleRestaurant = restaurant!.restaurants![0].name;
+    int randomNumber = random.nextInt(restaurant!.restaurants!.length);
+
+    var titleNotification = "<b>Rekomendasi Restoran hari ini! 😋</b>";
+    var titleRestaurant = restaurant.restaurants![randomNumber].name;
 
     await flutterLocalNotificationsPlugin.show(
       0,
@@ -69,8 +74,13 @@ class NotificationHelper {
   void configureSelectNotificationSubject(String route) {
     selectNotificationSubject.stream.listen((String payload) async {
       var data = ListRestaurantModel.fromJson(json.decode(payload));
-      var restaurant = data.restaurants![0];
-      Navigation.intentWithData(routeName: route, args: restaurant);
+      int randomNumber = random.nextInt(data.restaurants!.length);
+
+      var restaurant = data.restaurants![randomNumber];
+      Navigation.intentWithData(
+          routeName: route,
+          args: DetailArguments(id: restaurant.id!, name: restaurant.name!));
+      print('go to notif detail');
     });
   }
 }
