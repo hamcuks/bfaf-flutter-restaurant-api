@@ -4,7 +4,7 @@ import 'dart:ui';
 
 import 'package:dicoding_submission_restaurant_app_api/network/api_service.dart';
 import 'package:dicoding_submission_restaurant_app_api/network/notification_helper.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:dicoding_submission_restaurant_app_api/main.dart';
 
 final ReceivePort port = ReceivePort();
 
@@ -28,7 +28,7 @@ class BackgroundService {
 
     var result = await ApiService().listRestaurants();
     await _notificationHelper.showNotification(
-        FlutterLocalNotificationsPlugin(), result);
+        flutterLocalNotificationsPlugin, result);
 
     _uiSendPort ??= IsolateNameServer.lookupPortByName(_isolateName);
     _uiSendPort?.send(null);
