@@ -21,6 +21,7 @@ class DetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backwardsCompatibility: false,
         centerTitle: true,
         title: Text(
           '${data.name}',
