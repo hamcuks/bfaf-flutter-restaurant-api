@@ -33,8 +33,7 @@ class SettingsPage extends StatelessWidget {
                     Spacer(),
                     Switch(
                       value: data.isDarkMode,
-                      onChanged: (bool value) =>
-                          data.isDarkMode = !data.isDarkMode,
+                      onChanged: (bool value) => data.isDarkMode = value,
                     ),
                   ],
                 ),
@@ -47,8 +46,7 @@ class SettingsPage extends StatelessWidget {
                     Spacer(),
                     Switch(
                       value: data.isReminderActive,
-                      onChanged: (bool value) =>
-                          data.dailyReminderRestaurant(value),
+                      onChanged: (bool value) => data.isReminderActive = value,
                     ),
                   ],
                 ),
