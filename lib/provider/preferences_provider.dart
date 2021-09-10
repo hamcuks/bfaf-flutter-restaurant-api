@@ -8,32 +8,39 @@ class PreferencesProvider extends ChangeNotifier {
   final PreferencesHelper _prefHelper = PreferencesHelper();
 
   PreferencesProvider() {
-    _getTheme();
+    _getPreferences();
   }
 
   bool _isDarkMode = false;
   bool get isDarkMode => _isDarkMode;
 
-  void _getTheme() async {
+  bool _isReminderActive = false;
+  bool get isReminderActive => _isReminderActive;
+
+  void _getPreferences() async {
     _isDarkMode = await _prefHelper.isDarkMode;
+    _isReminderActive = await _prefHelper.isDailyReminder;
     notifyListeners();
   }
 
   set isDarkMode(bool value) {
     _isDarkMode = value;
-    _prefHelper.darkMode(value);
+    _prefHelper.setDarkMode(value);
     notifyListeners();
   }
 
-  bool _isReminderActive = false;
-  bool get isReminderActive => _isReminderActive;
+  set isReminderActive(bool value) {
+    _isReminderActive = value;
+    _prefHelper.setDailyReminder(value);
+    notifyListeners();
+    dailyReminderRestaurant();
+  }
 
-  Future<bool> dailyReminderRestaurant(bool val) async {
-    _isReminderActive = val;
+  Future<void> dailyReminderRestaurant() async {
     if (_isReminderActive) {
       print('reminder aktif');
       notifyListeners();
-      return await AndroidAlarmManager.periodic(
+      await AndroidAlarmManager.periodic(
         Duration(hours: 24),
         1,
         BackgroundService.callback,
@@ -44,7 +51,7 @@ class PreferencesProvider extends ChangeNotifier {
     } else {
       print('reminder disabled');
       notifyListeners();
-      return await AndroidAlarmManager.cancel(1);
+      await AndroidAlarmManager.cancel(1);
     }
   }
 }
