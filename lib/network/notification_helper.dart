@@ -11,17 +11,18 @@ final selectNotificationSubject = BehaviorSubject<String>();
 
 class NotificationHelper {
   static NotificationHelper? _instance;
-  Random random = Random();
-  int randomNumber = 0;
+  int randomNumber = Random()
+      .nextInt(20); // generate random number from 0 - 20 (restaurant count)
 
   NotificationHelper._internal() {
     _instance = this;
   }
 
   factory NotificationHelper() => _instance ?? NotificationHelper._internal();
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
-  Future<void> initNotification(
-      FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin) async {
+  Future<void> initNotification() async {
     var _initializationSettingsAndroid =
         AndroidInitializationSettings('app_icon');
 
@@ -32,7 +33,7 @@ class NotificationHelper {
         onSelectNotification: (String? payload) async {
       if (payload != null) print('Notif payload: $payload');
 
-      selectNotificationSubject.add(payload ?? 'empty payload');
+      selectNotificationSubject.add(payload ?? "no data");
     });
   }
 
@@ -56,31 +57,31 @@ class NotificationHelper {
     var platformSpecifics =
         NotificationDetails(android: androidPlatformSpecifics);
 
-    randomNumber = random.nextInt(restaurant!.restaurants!.length);
-
+    var randomRestaurant = restaurant!.restaurants![randomNumber];
     var titleNotification = "<b>Rekomendasi Restoran hari ini! 😋</b>";
-    var titleRestaurant = restaurant.restaurants![randomNumber].name;
+    var titleRestaurant = randomRestaurant.name;
 
     await flutterLocalNotificationsPlugin.show(
       0,
       titleNotification,
       titleRestaurant,
       platformSpecifics,
-      payload: json.encode(
-        restaurant.toJson(),
-      ),
+      payload: json.encode({
+        "id": randomRestaurant.id,
+        "name": randomRestaurant.name,
+      }),
     );
   }
 
   void configureSelectNotificationSubject(String route) {
-    selectNotificationSubject.stream.listen((String payload) async {
-      var data = ListRestaurantModel.fromJson(json.decode(payload));
+    selectNotificationSubject.listen((value) {
+      var data = json.decode(value);
 
-      var restaurant = data.restaurants![randomNumber];
       Navigation.intentWithData(
-          routeName: route,
-          args: DetailArguments(id: restaurant.id!, name: restaurant.name!));
-      print('go to notif detail');
+          routeName: '/detail',
+          args: DetailArguments(id: data["id"], name: data["name"]));
+
+      print("GO TO DETAILL");
     });
   }
 }
