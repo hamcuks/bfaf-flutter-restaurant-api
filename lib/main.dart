@@ -12,6 +12,7 @@ import 'package:dicoding_submission_restaurant_app_api/ui/detail_page.dart';
 import 'package:dicoding_submission_restaurant_app_api/ui/home_page.dart';
 import 'package:dicoding_submission_restaurant_app_api/ui/settings_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 
@@ -26,7 +27,7 @@ Future<void> main() async {
 
   _service.initializeIsolate();
   await AndroidAlarmManager.initialize();
-  await _notificationHelper.initNotification(flutterLocalNotificationsPlugin);
+  await _notificationHelper.initNotification();
   runApp(MyApp());
 }
 
@@ -52,6 +53,9 @@ class MyApp extends StatelessWidget {
           theme: ThemeData.light().copyWith(
             scaffoldBackgroundColor: MyTheme.scaffoldBackground,
             cardColor: Colors.white,
+            appBarTheme: AppBarTheme(
+              foregroundColor: data.isDarkMode ? Colors.white : Colors.black87,
+            ),
           ),
           darkTheme: ThemeData.dark().copyWith(
             cardColor: Color(0xFF434343),
