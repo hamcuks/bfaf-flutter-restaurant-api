@@ -1,4 +1,3 @@
-import 'package:dicoding_submission_restaurant_app_api/network/api_service.dart';
 import 'package:dicoding_submission_restaurant_app_api/network/notification_helper.dart';
 import 'package:dicoding_submission_restaurant_app_api/provider/restaurant_provider.dart';
 import 'package:dicoding_submission_restaurant_app_api/provider/result_state.dart';

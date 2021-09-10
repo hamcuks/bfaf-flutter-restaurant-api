@@ -2,7 +2,6 @@ import 'package:dicoding_submission_restaurant_app_api/model/favourite_model.dar
 import 'package:dicoding_submission_restaurant_app_api/network/database_helper.dart';
 import 'package:dicoding_submission_restaurant_app_api/provider/result_state.dart';
 import 'package:flutter/foundation.dart';
-import 'package:sqflite/sqflite.dart';
 
 class FavouriteProvider extends ChangeNotifier {
   final DatabaseHelper _database = DatabaseHelper();

@@ -1,4 +1,3 @@
-import 'package:dicoding_submission_restaurant_app_api/network/preferences_helper.dart';
 import 'package:dicoding_submission_restaurant_app_api/provider/preferences_provider.dart';
 import 'package:dicoding_submission_restaurant_app_api/theme.dart';
 import 'package:flutter/material.dart';

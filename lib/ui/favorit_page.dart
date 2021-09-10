@@ -1,6 +1,3 @@
-import 'package:dicoding_submission_restaurant_app_api/network/database_helper.dart';
-import 'package:dicoding_submission_restaurant_app_api/model/detail_restaurant_model.dart';
-import 'package:dicoding_submission_restaurant_app_api/model/favourite_model.dart';
 import 'package:dicoding_submission_restaurant_app_api/provider/favourite_provider.dart';
 import 'package:dicoding_submission_restaurant_app_api/provider/result_state.dart';
 import 'package:dicoding_submission_restaurant_app_api/theme.dart';
