@@ -22,7 +22,7 @@ class LoadAnimation extends StatelessWidget {
         children: [
           Lottie.asset('assets/json/$fileName.json', width: width),
           SizedBox(
-            height: 32,
+            height: 22,
           ),
           Text(
             '$text',

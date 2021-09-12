@@ -225,7 +225,7 @@ class RestoranWidget extends StatelessWidget {
                   fileName: 'no-internet',
                   text:
                       'Tidak dapat memuat data, pastikan anda terkoneksi internet...',
-                  width: 250,
+                  width: 150,
                 );
               } else {
                 return Center(
