@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:dicoding_submission_restaurant_app_api/network/api_service.dart';
 import 'package:dicoding_submission_restaurant_app_api/network/notification_helper.dart';
 import 'package:dicoding_submission_restaurant_app_api/main.dart';
+import 'package:http/http.dart' show Client;
 
 final ReceivePort port = ReceivePort();
 
@@ -26,7 +27,7 @@ class BackgroundService {
     print('alarm triggered!');
     final NotificationHelper _notificationHelper = NotificationHelper();
 
-    var result = await ApiService().listRestaurants();
+    var result = await ApiService(Client()).listRestaurants();
     await _notificationHelper.showNotification(
         flutterLocalNotificationsPlugin, result);
 

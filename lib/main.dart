@@ -14,6 +14,7 @@ import 'package:dicoding_submission_restaurant_app_api/ui/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' show Client;
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => RestaurantProvider(apiService: ApiService()),
+          create: (_) => RestaurantProvider(apiService: ApiService(Client())),
         ),
         ChangeNotifierProvider(
           create: (_) => FavouriteProvider(),

@@ -3,9 +3,10 @@ import 'package:dicoding_submission_restaurant_app_api/model/detail_restaurant_m
 import 'package:dicoding_submission_restaurant_app_api/network/api_service.dart';
 import 'package:dicoding_submission_restaurant_app_api/provider/result_state.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:http/http.dart' show Client;
 
 class DetailRestaurantProvider extends ChangeNotifier {
-  final ApiService apiService = ApiService();
+  final ApiService apiService = ApiService(Client());
   final String id;
 
   DetailRestaurantProvider({required this.id}) {
@@ -32,7 +33,7 @@ class DetailRestaurantProvider extends ChangeNotifier {
       if (await _checkConnection) {
         final restaurant = await apiService.detailRestaurant(id);
 
-        if (restaurant!.restaurant == null) {
+        if (restaurant.restaurant == null) {
           _state = ResultState.NO_DATA;
           notifyListeners();
           return _message = 'No Data';

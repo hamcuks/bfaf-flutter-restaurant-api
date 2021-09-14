@@ -32,7 +32,7 @@ class RestaurantProvider extends ChangeNotifier {
       if (await _checkConnection) {
         final restaurant = await apiService.listRestaurants();
 
-        if (restaurant!.restaurants!.isEmpty) {
+        if (restaurant.restaurants!.isEmpty) {
           _state = ResultState.NO_DATA;
           notifyListeners();
           return _message = 'Data Tidak Ditemukan :(';
@@ -60,7 +60,7 @@ class RestaurantProvider extends ChangeNotifier {
       if (await _checkConnection) {
         final restaurant = await apiService.searchRestaurant(keyword);
 
-        if (restaurant!.restaurants!.isEmpty) {
+        if (restaurant.restaurants!.isEmpty) {
           _state = ResultState.NO_DATA;
           notifyListeners();
           return _message = 'Pencarian Tidak Ditemukan :(';
