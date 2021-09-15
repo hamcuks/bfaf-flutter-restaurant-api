@@ -20,14 +20,17 @@ class LoadAnimation extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Lottie.asset('assets/json/$fileName.json', width: width),
+          Flexible(
+              child: Lottie.asset('assets/json/$fileName.json', width: width)),
           SizedBox(
             height: 22,
           ),
-          Text(
-            '$text',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 18, height: 1.5),
+          Flexible(
+            child: Text(
+              '$text',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 18, height: 1.5),
+            ),
           ),
         ],
       ),

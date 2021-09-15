@@ -60,40 +60,41 @@ class RestaurantCard extends StatelessWidget {
                       SizedBox(
                         width: 16,
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            width: 180,
-                            child: Text(
-                              '${data.name}',
-                              style: MyTheme.normalText,
-                              overflow: TextOverflow.ellipsis,
+                      Flexible(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              width: 250,
+                              child: Text(
+                                '${data.name}',
+                                style: MyTheme.normalText,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 8,
-                          ),
-                          Row(
-                            children: [
-                              InfoRestaurant(
-                                icon: Icons.star,
-                                iconColor: Colors.orange,
-                                text: '${data.rating}',
-                              ),
-                              SizedBox(
-                                width: 16,
-                              ),
-                              InfoRestaurant(
-                                icon: Icons.location_pin,
-                                iconColor: Colors.red,
-                                text: '${data.city}',
-                              ),
-                            ],
-                          )
-                        ],
+                            SizedBox(
+                              height: 8,
+                            ),
+                            Row(
+                              children: [
+                                InfoRestaurant(
+                                  icon: Icons.star,
+                                  iconColor: Colors.orange,
+                                  text: '${data.rating}',
+                                ),
+                                SizedBox(
+                                  width: 16,
+                                ),
+                                InfoRestaurant(
+                                  icon: Icons.location_pin,
+                                  iconColor: Colors.red,
+                                  text: '${data.city}',
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
                       ),
-                      Spacer(),
                       IconButton(
                         onPressed: () {
                           if (isFavourite as bool) {

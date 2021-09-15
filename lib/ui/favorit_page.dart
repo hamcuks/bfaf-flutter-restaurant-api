@@ -15,54 +15,53 @@ class FavoritePage extends StatelessWidget {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Favoritmu',
-                style: MyTheme.largeText,
-              ),
-              SizedBox(
-                height: 22,
-              ),
-              ChangeNotifierProvider<FavouriteProvider>(
-                create: (_) => FavouriteProvider(),
-                child: Consumer<FavouriteProvider>(
-                  builder: (context, data, _) {
-                    if (data.state == ResultState.LOADING) {
-                      print(data.state);
-                      return LoadAnimation(
-                        fileName: 'loading',
-                        text: 'Sedang Memuat Data...',
-                        width: 50,
-                      );
-                    } else if (data.state == ResultState.HAS_DATA) {
-                      print("STATE: ${data.state}");
-                      return Expanded(
-                        child: ListView.builder(
+          child: ChangeNotifierProvider(
+            create: (_) => FavouriteProvider(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Favoritmu',
+                  style: MyTheme.largeText,
+                ),
+                SizedBox(
+                  height: 22,
+                ),
+                Expanded(
+                  flex: 10,
+                  child: Consumer<FavouriteProvider>(
+                    builder: (context, data, _) {
+                      if (data.state == ResultState.LOADING) {
+                        print(data.state);
+                        return LoadAnimation(
+                          fileName: 'loading',
+                          text: 'Sedang Memuat Data...',
+                          width: 50,
+                        );
+                      } else if (data.state == ResultState.HAS_DATA) {
+                        print("STATE: ${data.state}");
+                        return ListView.builder(
                           itemBuilder: (context, index) => RestaurantCard(
                             data: data.favouriteResult[index],
                           ),
                           itemCount: data.favouriteResult.length,
-                        ),
-                      );
-                    } else if (data.state == ResultState.NO_DATA) {
-                      return Expanded(
-                        child: LoadAnimation(
+                        );
+                      } else if (data.state == ResultState.NO_DATA) {
+                        return LoadAnimation(
                           fileName: 'not-found',
                           text: 'Favorite (0)',
                           width: 250,
-                        ),
-                      );
-                    } else {
-                      return Center(
-                        child: Text(''),
-                      );
-                    }
-                  },
+                        );
+                      } else {
+                        return Center(
+                          child: Text(''),
+                        );
+                      }
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

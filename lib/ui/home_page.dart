@@ -218,7 +218,7 @@ class RestoranWidget extends StatelessWidget {
                 return LoadAnimation(
                   fileName: 'not-found',
                   text: 'Tidak Dapat Menemukan Data...',
-                  width: 250,
+                  width: 150,
                 );
               } else if (data.state == ResultState.NO_INTERNET) {
                 return LoadAnimation(
